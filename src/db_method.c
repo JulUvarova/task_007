@@ -73,11 +73,12 @@ void make_data(char name[NMAX], int *age, char email[NMAX]) {
     *age = strtol(number, NULL, 10);
     count++;
     number_count = 0;
-    while (str[count] != '\0') {
+    while (str[count] != '\n') {
         email[number_count] = str[count];
         count++;
         number_count++;
     }
+    name[count - 1] = '\0';
 }
 
 void do_show_all(sqlite3 *db) {
@@ -113,7 +114,7 @@ void do_show(sqlite3 *db) {
 }
 
 void open_db(sqlite3 **db) {
-    int is_open = sqlite3_open("./data-samples/task007.db", db);  // 0 - true
+    int is_open = sqlite3_open("../data-samples/task007.db", db);  // 0 - true
     if (is_open != SQLITE_OK) {
         exit_with_error();
     }
