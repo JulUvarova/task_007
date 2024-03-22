@@ -114,7 +114,7 @@ void do_show(sqlite3 *db) {
 }
 
 void open_db(sqlite3 **db) {
-    int is_open = sqlite3_open("../data-samples/task007.db", db);  // 0 - true
+    int is_open = sqlite3_open("./data-samples/task007.db", db);  // 0 - true
     if (is_open != SQLITE_OK) {
         exit_with_error();
     }
