@@ -11,3 +11,4 @@ void do_show(sqlite3 *db);
 void do_show_all(sqlite3 *db);
 void do_add(sqlite3 *db);
 void do_remove(sqlite3 *db);
+void make_data(char name[NMAX], int *age, char email[NMAX]);

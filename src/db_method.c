@@ -36,14 +36,13 @@ void do_remove(sqlite3 *db) {
 
 void do_add(sqlite3 *db) {
     char sql[NMAX] = "INSERT INTO students (name, age, email) VALUES(?, ?, ?);";
-    char name[NMAX] = {0}, surname[NMAX] = {0}, email[NMAX] = {0};
+    char name[NMAX] = {0}, email[NMAX] = {0};
     int age = 0;
-    if (scanf("%255s %255s %d %255s", name, surname, &age, email) != 4) exit_with_error();
+    make_data(name, &age, email);
     sqlite3_stmt *data = NULL;
     int is_read = sqlite3_prepare_v2(db, sql, -1, &data, 0);
     if (is_read == SQLITE_OK) {
-        name[strlen(name)] = ' ';
-        sqlite3_bind_text(data, 1, strcat(name, surname), -1, SQLITE_STATIC);
+        sqlite3_bind_text(data, 1, name, -1, SQLITE_STATIC);
         sqlite3_bind_int(data, 2, age);
         sqlite3_bind_text(data, 3, email, -1, SQLITE_STATIC);
     } else {
@@ -51,6 +50,34 @@ void do_add(sqlite3 *db) {
     }
     sqlite3_step(data);
     sqlite3_finalize(data);
+}
+
+void make_data(char name[NMAX], int *age, char email[NMAX]) {
+    char str[NMAX] = {0};
+    getchar();
+    fgets(str, (NMAX - 1), stdin);
+    int count = 0;
+    while (str[count] < '0' || str[count] > '9') {
+        name[count] = str[count];
+        count++;
+    }
+    name[count - 1] = '\0';
+    //  printf("отладка\n");
+    char number[NMAX] = {0};
+    int number_count = 0;
+    while (str[count] != ' ') {
+        number[number_count] = str[count];
+        number_count++;
+        count++;
+    }
+    *age = strtol(number, NULL, 10);
+    count++;
+    number_count = 0;
+    while (str[count] != '\0') {
+        email[number_count] = str[count];
+        count++;
+        number_count++;
+    }
 }
 
 void do_show_all(sqlite3 *db) {
